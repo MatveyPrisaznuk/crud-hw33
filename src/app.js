@@ -27,11 +27,12 @@ function createStudents(array) {
   tbody.innerHTML = item;
 }
 
-buttonGet.addEventListener("click", () => {
-  getStudents().then((res) => createStudents(res));
+buttonGet.addEventListener("click", async () => {
+  const res = await getStudents();
+  createStudents(res);
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const elements = event.currentTarget.elements;
 
@@ -45,26 +46,19 @@ form.addEventListener("submit", (event) => {
   };
 
   if (editingId) {
-    changeStudents(editingId, studentsData).then(() => {
-      getStudents().then((res) => {
-        form.reset();
-        createStudents(res);
-        editingId = null;
-      });
-    });
-
-    return;
+    await changeStudents(editingId, studentsData);
+    editingId = null;
+  } else {
+    await postStudents(studentsData);
   }
 
-  postStudents(studentsData).then(() => {
-    getStudents().then((res) => {
-      form.reset();
-      createStudents(res);
-    });
-  });
+
+  const res = await getStudents();
+  createStudents(res);
+  form.reset();
 });
 
-tbody.addEventListener("click", (event) => {
+tbody.addEventListener("click", async (event) => {
   const action = event.target.dataset.action;
   if (!action) {
     return;
@@ -72,21 +66,20 @@ tbody.addEventListener("click", (event) => {
   const tr = event.target.closest("tr");
   const id = tr.id;
   if (action === "delete") {
-    deleteStudents(id)
-      .then(() => getStudents())
-      .then((res) => createStudents(res));
+    await deleteStudents(id);
+    const res = await getStudents();
+    createStudents(res);
   }
 
   if (action === "edit") {
-    changeStudents(id).then((student) => {
-      form.name.value = student.name;
-      form.age.value = student.age;
-      form.course.value = student.course;
-      form.skills.value = student.skills;
-      form.email.value = student.email;
-      form.isEnrolled.checked = student.isEnrolled;
+    const student = await changeStudents(id);
+    form.name.value = student.name;
+    form.age.value = student.age;
+    form.course.value = student.course;
+    form.skills.value = student.skills;
+    form.email.value = student.email;
+    form.isEnrolled.checked = student.isEnrolled;
 
-      editingId = id;
-    });
+    editingId = id;
   }
 });

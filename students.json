@@ -71,21 +71,12 @@
     },
     {
       "name": "Ivan",
-      "age": "16",
+      "age": "17",
       "course": "Frontend",
-      "skills": "HTML",
-      "email": "hjfghfg@gfhjnfg",
+      "skills": "HTML,CSS,JavaScript",
+      "email": "qwrtz@gfma",
       "isEnrolled": true,
-      "id": "MeexHW2Fkrg"
-    },
-    {
-      "name": "756",
-      "age": "65",
-      "course": "Frontend",
-      "skills": "HTML",
-      "email": "hyjuyt@htf",
-      "isEnrolled": true,
-      "id": "2aOZ2QH8S80"
+      "id": "Zrmbab0bCJo"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
